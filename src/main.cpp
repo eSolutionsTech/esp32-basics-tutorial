@@ -1,11 +1,16 @@
 #include <HardwareSerial.h>
-#include <ArduinoOTA.h>
 #include <Syslog.h>
 #include <ESP32WebServer.h>
+
+#include <DHT_U.h>
+#include <Adafruit_Sensor.h>
+
+#define DHT_PIN 15
 
 #include <service/wifi_service.h>
 #include <service/ota_service.h>
 #include <handlers/root_handler.h>
+#include <service/temperature_service.h>
 
 const char *HOSTNAME = "temp-sensor";
 const char *SYSLOG_SERVER = "logs5.papertrailapp.com";
@@ -20,6 +25,9 @@ OtaService otaService;
 
 RootHandler rootHandler(&server);
 
+DHT_Unified dht(DHT_PIN, DHT22);
+TemperatureService temperatureService(&dht);
+
 void setup() {
     Serial.begin(115200);
 
@@ -30,9 +38,12 @@ void setup() {
 
     server.on("/", [] { rootHandler.currentStatus(); });
     server.begin();
+
+    temperatureService.begin();
 }
 
 void loop() {
     otaService.loop();
     server.handleClient();
+    temperatureService.loop();
 }
