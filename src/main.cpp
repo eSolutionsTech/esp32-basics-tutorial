@@ -9,8 +9,9 @@ void setup() {
     Serial.begin(115200);
 
     wifiService.begin();
+    ArduinoOTA.begin();
 }
 
 void loop() {
-
+    ArduinoOTA.handle();
 }
