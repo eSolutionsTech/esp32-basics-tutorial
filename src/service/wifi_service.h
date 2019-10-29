@@ -2,6 +2,7 @@
 #define ESP32_BASICS_TUTORIAL_WIFI_SERVICE_H
 
 #include <WiFi.h>
+#include <Syslog.h>
 
 #ifndef WIFI_SSID
 #define WIFI_SSID "wifi_ssid"

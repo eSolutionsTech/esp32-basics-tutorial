@@ -80,4 +80,4 @@ add_custom_target(
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-add_executable(${PROJECT_NAME} ${SRC_LIST} src/main.cpp src/service/wifi_service.cpp src/service/wifi_service.h)
+add_executable(${PROJECT_NAME} ${SRC_LIST} src/service/ota_service.cpp src/service/ota_service.h)

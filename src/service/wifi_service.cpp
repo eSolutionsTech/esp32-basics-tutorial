@@ -1,9 +1,11 @@
 #include "wifi_service.h"
 
+extern Syslog syslog;
+
 void WifiService::begin() {
     WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
 
-    printf("connecting to serial...\n");
+    syslog.log("connecting to serial...\n");
     int retry = 0;
     while (WiFiClass::status() != WL_CONNECTED && retry < 20) {
         printf(".");
@@ -13,8 +15,8 @@ void WifiService::begin() {
     printf("\n");
 
     if (WiFiClass::status() == WL_CONNECTED) {
-        printf("connected to WiFi, ip: %s\n", WiFi.localIP().toString().c_str());
+        syslog.logf("connected to WiFi, ip: %s\n", WiFi.localIP().toString().c_str());
     } else {
-        printf("wifi connection failed\n");
+        syslog.log(LOG_ERR, "wifi connection failed\n");
     }
 }
