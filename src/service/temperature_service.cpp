@@ -1,7 +1,8 @@
 #include "temperature_service.h"
 
-TemperatureService::TemperatureService(DHT_Unified *dht) {
+TemperatureService::TemperatureService(DHT_Unified *dht, PubSubClient *mqttClient) {
     __dht = dht;
+    __mqttClient = mqttClient;
 }
 
 void TemperatureService::begin() {
@@ -47,10 +48,12 @@ void TemperatureService::loop() {
 
         if (!isnan(temp.temperature)) {
             syslog.logf(LOG_INFO, "temperature: %f", temp.temperature);
+            __mqttClient->publish("home/bedroom/temperature", String(temp.temperature).c_str());
         }
 
         if (!isnan(temp.relative_humidity)) {
             syslog.logf(LOG_INFO, "humidity %f", humidity.relative_humidity);
+            __mqttClient->publish("home/bedroom/humidity", String(humidity.relative_humidity).c_str());
         }
 
         lastSent = millis();

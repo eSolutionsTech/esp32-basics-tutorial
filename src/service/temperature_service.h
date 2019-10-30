@@ -4,6 +4,7 @@
 
 #include <DHT_U.h>
 #include <Syslog.h>
+#include <PubSubClient.h>
 
 extern Syslog syslog;
 
@@ -11,7 +12,7 @@ static unsigned long lastSent;
 
 class TemperatureService {
 public:
-    explicit TemperatureService(DHT_Unified *dht);
+    TemperatureService(DHT_Unified *dht, PubSubClient *mqttClient);
 
     void begin();
 
@@ -19,6 +20,7 @@ public:
 
 private:
     DHT_Unified *__dht;
+    PubSubClient *__mqttClient;
 };
 
 
